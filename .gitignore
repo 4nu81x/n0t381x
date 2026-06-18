@@ -9,3 +9,10 @@ desktop.ini
 
 # Local logs
 *.log
+
+# Node dependencies
+node_modules/
+
+# Generated bookmarklet cache files (if we want to build locally but keep repo clean)
+# src/*.bookmarklet.txt
+

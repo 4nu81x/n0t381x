@@ -97,8 +97,55 @@ llama-server \
 
 ```text
 n0t381x/
-├── manifest.json   # Extension configuration (Manifest V3)
-├── popup.html      # UI structure of the extension popup
-├── popup.js        # Extension scripting, text scraping, and API interaction logic
-└── README.md       # Project documentation
+├── src/
+│   ├── desktop.js                  # Desktop bookmarklet logic (local loopback)
+│   ├── desktop.bookmarklet.txt     # Compiled desktop bookmarklet payload
+│   ├── mobile.v2.js                # Mobile bookmarklet logic (localtunnel endpoint)
+│   └── mobile.v2.bookmarklet.txt   # Compiled mobile bookmarklet payload
+├── scripts/
+│   └── build.js                    # Simple build script to URL-encode JS files to bookmarklet strings
+├── manifest.json                   # Extension configuration (Manifest V3)
+├── popup.html                      # UI structure of the extension popup
+├── popup.js                        # Extension scripting, text scraping, and API interaction logic
+├── .gitignore                      # Git ignore file
+└── README.md                       # Project documentation
 ```
+
+---
+
+## Bookmarklets (Desktop & Mobile v2)
+
+For environments where browser extensions cannot be installed (such as mobile browsers or restricted desktop environments), **n0t381x** can be run as a bookmarklet. Bookmarklets execute directly in the context of the active tab, parse the page text, send it to the configured LLM API, and copy the formatted Markdown straight to your clipboard.
+
+### 1. Desktop Bookmarklet (Local HTTP)
+Designed for desktop browsers when executing against localhost APIs:
+* **Source Code**: [`src/desktop.js`](file:///mnt/0xJackal/workspace/richie_2.0/n0t381x/src/desktop.js)
+* **API Endpoint**: `http://127.0.0.1:8080/v1/chat/completions`
+* **HTTPS Bypass (Mixed Content)**: Modern browsers block HTTP requests from HTTPS websites by default (Mixed Content). To run the desktop bookmarklet on HTTPS sites, you must enable insecure content in your browser's site settings for that target domain (Click the lock/settings icon next to the URL -> Site Settings -> Allow "Insecure content").
+
+### 2. Mobile v2 Bookmarklet (Localtunnel / HTTPS)
+Designed for mobile browsers (iOS Safari, Android Chrome) and HTTPS sites without requiring security adjustments. This version runs silently (no blocking `alert()` calls) so iOS WebKit doesn't block execution:
+* **Source Code**: [`src/mobile.v2.js`](file:///mnt/0xJackal/workspace/richie_2.0/n0t381x/src/mobile.v2.js)
+* **API Endpoint**: Localtunnel URL (e.g., `https://honest-forks-refuse.loca.lt/v1/chat/completions`)
+
+#### Localtunnel Workflow & Setup
+1. **Start the Tunnel**: On the machine running your local LLM (listening on port 8080), expose it to the web via HTTPS using localtunnel:
+   ```bash
+   npx localtunnel --port 8080
+   ```
+2. **Bypass Interstitial**: When you start localtunnel, it provides a URL like `https://xxxx.loca.lt`. Navigating to this URL directly in a browser shows a reminder page. Tap **"Click to continue"** once on your mobile browser to bypass the interstitial screen.
+3. **Bypass-Tunnel-Reminder Header**: The mobile v2 bookmarklet automatically includes the `'Bypass-Tunnel-Reminder': 'true'` header in fetch requests to prevent API requests from getting blocked by the reminder screen.
+4. **Update Endpoint**: If your localtunnel session restarts and changes its URL, update the `API_URL` constant in [`src/mobile.v2.js`](file:///mnt/0xJackal/workspace/richie_2.0/n0t381x/src/mobile.v2.js) and run the build script.
+
+---
+
+## Building Bookmarklets
+
+To encode the Javascript source files into bookmarklet strings:
+1. Run the build script:
+   ```bash
+   node scripts/build.js
+   ```
+2. The generated bookmarklet payloads will be written to `src/desktop.bookmarklet.txt` and `src/mobile.v2.bookmarklet.txt`.
+3. Create a new bookmark in your browser, and paste the entire content of the `.txt` file into the URL/Address field of the bookmark.
+
