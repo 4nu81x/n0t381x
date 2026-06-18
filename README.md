@@ -1,6 +1,17 @@
-# Note81x - Operational Filter (n0t381x)
+# n0t381x // OPERATIONAL NOTE FILTER
 
-**Note81x** is a lightweight, high-speed browser extension designed specifically for offensive security professionals, penetration testers, and CTF/exam takers (e.g., OSCP, HTB). It automatically digests dense academic texts or lab instructions from active tabs, filters out the non-operational filler, and outputs structured, Obsidian-ready Markdown documentation using a local Large Language Model (LLM).
+```
+            _______ ___ __ ___       
+  _ __   _ \___   /( _ )_ | \ \/ /   
+ | '_ \ | |  /  / / _ \| |   \  /    
+ | | | || | /  /_|___/|| |   /  \    
+ |_| |_||_|/_____|___/ |_|  /_/\_\   
+                                     
+            [ SYSTEM: ONLINE ]
+```
+
+**n0t381x** is a lightweight, high-speed neural parser and browser extension/bookmarklet designed specifically for offensive security operations, penetration testers, and CTF/exam architectures (OSCP, HTB). It automatically ingests text data from active browser tabs, filters out non-operational fluff, and outputs clean, structured, Obsidian-ready Markdown.
+
 
 ---
 
