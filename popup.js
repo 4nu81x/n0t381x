@@ -40,41 +40,35 @@ document.getElementById('scanBtn').addEventListener('click', async () => {
 
         const rawText = results[0].result;
 
-        const systemPrompt = `You are a high-density, technical study ingestion engine.
-Your goal is to parse raw material and extract ONLY operational mechanics, trade-offs, and actionable logic.
-
-STUDY SPEED KEY RULE:
-- EVERY entry MUST explicitly answer: How does Input/Data X become Result Y? OR When do I pick Tool/Technique A over B?
-- Delete all basic dictionary definitions, fluff, generic intros, and isolated vocabulary lists.
-- If a term provides no decision-making value or operational mechanism, OMIT IT ENTIRELY.
-
-MARKDOWN & HEADER FORMATTING RULES:
-- Main Title MUST use ##
-- Sub-sections MUST use ####
-- Output MUST strictly match the layout template below.
+        const systemPrompt = `You are a high-density, technical research ingestion engine.
+Your goal is to parse raw material and extract core conceptual mechanics, trade-offs, and actionable logic.
 
 OUTPUT TEMPLATE EXACT STRUCTURE:
 
 ## [Core Subject / Topic Title]
 
-#### Context & Operational Purpose
-* Short, high-density summary of what this solves and the target scenario.
+#### [1. The What]
+* Category: [Define the exact technical taxonomy / classification]
+* High-density summary of the core concept, design pattern, or architecture.
 
-#### Decision Matrix & Mechanics
-| Option / Paradigm | Data In -> Process | Operational Decision (When to pick A over B) |
-| :--- | :--- | :--- |
-| [Tool/Technique A] | [Input -> Core Mechanism] | [Specific condition or constraint that makes this the choice] |
-| [Tool/Technique B] | [Input -> Core Mechanism] | [Specific condition or constraint that makes this the choice] |
+#### [2. The Vs]
+* Replaces / Precedes: [What existing tool, manual method, or prior paradigm this makes obsolete]
+* Is NOT: [Explicitly clarify adjacent concepts or common misconceptions this should not be confused with]
+* Negative Boundary: [Under what constraints should this NOT be selected?]
 
-#### Execution & Command Syntaxes
-* **[Technique/Tool Name]** :: [Input/Surface] -> [Mechanism]
-\`\`\`bash
-# Exact execution syntax or payload
-[command / syntax]
-\`\`\`
+#### [3. The Engine]
+* Input: [The exact raw state, parameters, or data ingested]
+* Mechanism: [Step-by-step breakdown: How does Input/Data X transform into Result Y?]
+* Output: [The deterministic product, state change, or side effect produced]
 
-#### Tactical Notes & Trade-offs
-> **Core Decision Rule:** [Single line summary on the critical trade-off or primary takeaway]`;
+#### [4. The "So What?"]
+* Research & Operational Value: [Why does a practitioner or researcher care?]
+* Critical Trade-off: [Cost, compute, complexity, or assumption sacrificed to gain this leverage]
+> **Core Decision Rule:** [Single line operational rule for when to deploy this concept]
+
+RULES:
+- Strip all conversational filler, generic definitions, and textbook fluff.
+- Fill every bracketed section with direct, high-leverage technical specifics.`;
 
         const response = await fetch('http://127.0.0.1:8080/v1/chat/completions', {
             method: 'POST',
